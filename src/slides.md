@@ -119,20 +119,41 @@ in contrast with dynamic analysis,
 
 which is performed on programs during their execution"
 
+---
+# I still understand?
+
+Static analysis will search code for non coding compliance without the need for code execution.
 
 ---
-# EH?
-- Tests the code without running it = SPEED
-- Compares the code against a given set of rules
+
+# I still don't understand?
+- It tests the code without running it = SPEED
+- It compares the code against a given set of rules
+- It tells you which line, file and error has been encountered
 
 ---
 
 # Why you should care
-
+<!--
 - Catch errors before they happen
 - It's fast
 - Consistently clean code base
 - Happy devs
+-->
+
+---
+
+
+# What errors will it highlight
+<!--
+- Dead code
+- Missing data types. 
+- Broken method, class and function signatures
+- Broken array shapes
+- Broken data type checks
+- Code smells. Code that is wronly documented
+- A whole lot more
+-->
 
 ---
 
@@ -280,8 +301,82 @@ private $lastName
 
 # How to configure
 
+- Neon format (phpstan.neon)
+- CLI
+---
+Neon format is similar to YAML
+```yaml
+parameters:
+	level: 6
+	paths:
+		- src
+		- tests
+```
+
+---
+# Priority order
+
+1. If a config file is supplied via CLI then it will be used
+2. Otherwise, if `phpstan.neon` exists then it will be used
+3. Otherwise, if `phpstan.neon.dist` exists that it will be used
+4. If no config is supplied then defaults will be used
+
+---
+# Git
+- Put `phpstan.neon.dist` in source control
+- Let devs create their own `phpstan.neon`
+- Add `phpstan.neon` to `.gitignore`
+---
+## Including files
+```yaml
+includes:
+- phpstan.neon.dist
+- phpstan_test.neon.dist
+```
 ---
 
+# Punning paths
+
+```yaml
+parameters:
+	paths:
+		- src
+		- tests
+```
+
+```bash
+./vendor/bin/phpstan analyse src tests
+```
+---
+
+# Excluding files
+
+```yaml
+parameters:
+  excludePaths:
+    - tests/*/data/*
+
+```
+
+---
+
+# Ignoring errors
+```yaml
+parameters:
+	ignoreErrors:
+		- '#Function pcntl_open not found\.#'
+        - '#Call to an undefined method Traversable<mixed, mixed>::uasort\(\)#'
+```
+
+---
+# Lots more config
+
+See [https://phpstan.org/config-reference](https://phpstan.org/config-reference) for more
+
+<!-- Includes config switches to turn checks on and off
+-->
+
+---
 
 # Recommended usage
 
