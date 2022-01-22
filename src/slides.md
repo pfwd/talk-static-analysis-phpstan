@@ -111,8 +111,52 @@ Quickly identify issues and gain confidence with the code
 # Static Analysis: What is it?
 
 ---
+# From Wikipedia
+
+"Static program analysis is the analysis of computer software performed without executing any programs, 
+
+in contrast with dynamic analysis, 
+
+which is performed on programs during their execution"
+
+
+---
+# EH?
+- Tests the code without running it = SPEED
+- Compares the code against a given set of rules
+
+---
 
 # Why you should care
+
+- Catch errors before they happen
+- It's fast
+- Consistently clean code base
+- Happy devs
+
+---
+
+## PHPStan has entered the chat
+
+- [phpstan.org](https://phpstan.org/)
+- [Ondřej Mirtes](https://github.com/ondrejmirtes)
+- [@OndrejMirtes](https://twitter.com/OndrejMirtes)
+
+---
+## PHPStan
+
+- Has an online editor
+- Is free and open source 
+- Has pro paid features
+---
+
+## Pro features
+
+- Web UI
+- Watch mode
+- Interactive fixer mode
+
+Checkout [phpstan.org](https://phpstan.org/) for more details
 
 ---
 
@@ -219,6 +263,21 @@ public function getFilename(): ?string
 ```
 
 ---
+# How to ignore code
+```php
+private $firstName /** @phpstan-ignore-line */
+
+/** @phpstan-ignore-next-line */
+private $lastName 
+```
+
+<!--
+- This would normally error as both $firstName and $lastName have no data types
+- You can also use two forward slashes (//)
+-->
+
+---
+
 # How to configure
 
 ---
