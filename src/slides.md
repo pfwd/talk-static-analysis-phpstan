@@ -11,6 +11,11 @@ footer: "Peter Fisher BSc MBCS [howtocodewell.net](https://howtocodewell.net) [@
 
 ---
 
+# Get the slides
+[https://github.com/pfwd/talk-static-analysis-phpstan](https://github.com/pfwd/talk-static-analysis-phpstan)
+
+---
+
 # $ whoami = Peter Fisher
 
 - PHP Contractor from the UK
