@@ -7,11 +7,12 @@ size: 16:9
 footer: "Peter Fisher BSc MBCS [howtocodewell.net](https://howtocodewell.net) [@howToCodeWell](https://twitter.com/howtocodewell) [@pfwd](https://twitter.com/pfwd)"
 ---
 
-# TALK TITLE GOES HERE
+# Static Analysis with PHPStan
 
 ---
 
 # Get the slides
+
 [https://github.com/pfwd/talk-static-analysis-phpstan](https://github.com/pfwd/talk-static-analysis-phpstan)
 
 ---
@@ -19,11 +20,19 @@ footer: "Peter Fisher BSc MBCS [howtocodewell.net](https://howtocodewell.net) [@
 # $ whoami = Peter Fisher
 
 - PHP Contractor from the UK
-- Host of the How To Code Well
--- Podcast [howtocodewell.fm](https://howtocodewell.fm)
--- YouTube channel [youtube.com/howtocodewell](https://youtube.com/howtocdewell)
--- Twitch live coders team [howtocodewell.net/live](https://howtocodewell.net/live)
--- Tutorials and courses [howtocodewell.net](https://howtocodewell.net)
+- Host of the How To Code Well -- Podcast [howtocodewell.fm](https://howtocodewell.fm)
+  -- YouTube channel [youtube.com/howtocodewell](https://youtube.com/howtocdewell)
+  -- Twitch live coders team [howtocodewell.net/live](https://howtocodewell.net/live)
+  -- Tutorials and courses [howtocodewell.net](https://howtocodewell.net)
+
+---
+
+# What am I talking about
+
+1. The dream
+2. What is Static Analysis
+3. Using PHPStan
+4. Recommendations for new and legacy projects
 
 ---
 
@@ -38,8 +47,8 @@ footer: "Peter Fisher BSc MBCS [howtocodewell.net](https://howtocodewell.net) [@
 - No architectural decisions have been made (yet)
 - No frameworks or library’s chosen (yet)
 - No bugs (yet)
-- Shopping list of new requirements
 - No end users (yet)
+- Shopping list of new requirements
 -->
 
 ---
@@ -47,18 +56,18 @@ footer: "Peter Fisher BSc MBCS [howtocodewell.net](https://howtocodewell.net) [@
 # Legacy projects
 
 <!--
-- Massive entangled code base
-- Mixture of frameworks and library's
-- Out of date code
-- Older version of PHP
+- Could have a spaghetti code base
+- Could have Mixture of frameworks and library's
+- Could be out of date code
+- Could be using an older version of PHP
 - Incoming change requests
-- No tests
+- Could have no tests
 - Lots of known bugs
 - Lots of unknown bugs
 - Lots of end users. Some are complaining
 - Performance issues
 - Security concerns
-- Low confidence that an upgrade will work
+- Could have a low confidence that an upgrade will work
 -->
 
 ---
@@ -69,7 +78,7 @@ footer: "Peter Fisher BSc MBCS [howtocodewell.net](https://howtocodewell.net) [@
 
 # New projects
 
-Start clean, continue clean and build up confidence with the code
+Start clean, continue clean whilst building up confidence with the code
 
 <!--
 - Be aware of known issues before deployment
@@ -82,7 +91,7 @@ Start clean, continue clean and build up confidence with the code
 
 # Legacy projects
 
-Quickly identify issues and gain confidence with the code
+Quickly identify issues whilst building up confidence with the code
 
 <!--
 - Be aware of known issues before deployment
@@ -91,6 +100,14 @@ Quickly identify issues and gain confidence with the code
 - Have confidence with the codebase
 - Standardize the codebase
 -->
+
+---
+
+# Code confidence
+
+The dreaded 3am phone call on Saturday after the Friday production deployment VS Knowing your code gets checked before
+it touches production
+
 ---
 
 # How do we get there
@@ -111,15 +128,17 @@ Quickly identify issues and gain confidence with the code
 # Static Analysis: What is it?
 
 ---
+
 # From Wikipedia
 
-"Static program analysis is the analysis of computer software performed without executing any programs, 
+"Static program analysis is the analysis of computer software performed without executing any programs,
 
-in contrast with dynamic analysis, 
+in contrast with dynamic analysis,
 
 which is performed on programs during their execution"
 
 ---
+
 # I still understand?
 
 Static analysis will search code for non coding compliance without the need for code execution.
@@ -127,32 +146,20 @@ Static analysis will search code for non coding compliance without the need for 
 ---
 
 # I still don't understand?
+
 - It tests the code without running it = SPEED
 - It compares the code against a given set of rules
-- It tells you which line, file and error has been encountered
+- It tells you which file and line doesn't conform to the given rules
 
 ---
 
 # Why you should care
+
 <!--
 - Catch errors before they happen
 - It's fast
 - Consistently clean code base
 - Happy devs
--->
-
----
-
-
-# What errors will it highlight
-<!--
-- Dead code
-- Missing data types. 
-- Broken method, class and function signatures
-- Broken array shapes
-- Broken data type checks
-- Code smells. Code that is wronly documented
-- A whole lot more
 -->
 
 ---
@@ -164,11 +171,13 @@ Static analysis will search code for non coding compliance without the need for 
 - [@OndrejMirtes](https://twitter.com/OndrejMirtes)
 
 ---
+
 ## PHPStan
 
 - Has an online editor
-- Is free and open source 
+- Is free and open source
 - Has pro paid features
+
 ---
 
 ## Pro features
@@ -182,9 +191,11 @@ Checkout [phpstan.org](https://phpstan.org/) for more details
 ---
 
 # How to install
+
 ```bash
 $ composer require --dev phpstan/phpstan
 ```
+
 <!--
 - PHPStan should be a dev dependency.  Don't install it in production
 -->
@@ -195,6 +206,7 @@ $ composer require --dev phpstan/phpstan
 ```bash
 $ ./vendor/bin/phpstan analyse src
 ```
+
 <!--
 - You can provide multiple folders or files to analyse in the command
 -->
@@ -202,6 +214,7 @@ $ ./vendor/bin/phpstan analyse src
 ---
 
 # When things go well
+
 ```bash
 root@768e64cf6e00:/var/www/html# ./vendor/bin/phpstan analyse src
 
@@ -213,6 +226,7 @@ root@768e64cf6e00:/var/www/html# ./vendor/bin/phpstan analyse src
 ---
 
 # Catching errors
+
 ```bash
 root@768e64cf6e00:/var/www/html# ./vendor/bin/phpstan analyse src
  293/293 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%
@@ -227,7 +241,9 @@ root@768e64cf6e00:/var/www/html# ./vendor/bin/phpstan analyse src
 
  [ERROR] Found 1 error
 ```
+
 ---
+
 # The fix
 
 ```php
@@ -249,34 +265,97 @@ public function getFilename(): ?string
 -->
 
 ---
+
 # Run levels
-- There are 10 run levels (0-9) that change the strictness of the checks. 
+
+- There are 10 run levels (0-9) that change the strictness of the checks.
 - Level 0 is used by default.
 - Running level 5 will run all the levels from 0-5
 
+---
+
+# Level 0
+
 <!--
-0 basic checks, unknown classes, unknown functions, unknown methods called on $this, wrong number of arguments passed to those methods and functions, always undefined variables
-
-1 possibly undefined variables, unknown magic methods and properties on classes with __call and __get
-
-2 unknown methods checked on all expressions (not just $this), validating PHPDocs
-
-3 return types, types assigned to properties
-
-4 basic dead code checking - always false instanceof and other type checks, dead else branches, unreachable code after return; etc.
-
-5 checking types of arguments passed to methods and functions
-
-6 report missing typehints
-
-7 report partially wrong union types - if you call a method that only exists on some types in a union type, level 7 starts to report that; other possibly incorrect situations
-
-8 report calling methods and accessing properties on nullable types
-
-9 be strict about the mixed type - the only allowed operation you can do with it is to pass it to another mixed
+- Basic checks
+- unknown classes
+- unknown functions
+- unknown methods called on $this
+- wrong number of arguments passed to those methods and functions
+- always undefined variables
 -->
 
 ---
+
+# Level 1
+
+<!--
+- possibly undefined variables
+- unknown magic methods and properties on classes with __call and __get
+-->
+
+---
+
+# Level 2
+
+<!--
+- unknown methods checked on all expressions (not just $this)
+- validating PHPDocs
+-->
+---
+
+# Level 3
+
+<!--
+- Return types
+- types assigned to properties
+-->
+
+---
+
+# Level 4
+<!--
+- Dead code checking - always false instanceof and other type checks 
+- Unreachable code after
+-->
+---
+
+# Level 5
+
+<!--
+Checking types of arguments passed to methods and functions
+-->
+---
+
+# Level 6
+
+<!--
+Missing typehints
+-->
+---
+
+# Level 7
+
+<!--
+- Report partially wrong union types 
+-->
+---
+
+# Level 8
+
+<!--
+- Report calling methods and accessing properties on nullable types
+-->
+---
+
+# Level 9
+
+<!--
+- 9 be strict about the mixed type
+-->
+
+---
+
 # How to run PHPStan at a given level
 
 ```bash
@@ -284,7 +363,9 @@ public function getFilename(): ?string
 ```
 
 ---
+
 # How to ignore code
+
 ```php
 private $firstName /** @phpstan-ignore-line */
 
@@ -303,17 +384,20 @@ private $lastName
 
 - Neon format (phpstan.neon)
 - CLI
+
 ---
 Neon format is similar to YAML
+
 ```yaml
 parameters:
-	level: 6
-	paths:
-		- src
-		- tests
+  level: 6
+  paths:
+    - src
+    - tests
 ```
 
 ---
+
 # Priority order
 
 1. If a config file is supplied via CLI then it will be used
@@ -322,31 +406,38 @@ parameters:
 4. If no config is supplied then defaults will be used
 
 ---
+
 # Git
+
 - Put `phpstan.neon.dist` in source control
 - Let devs create their own `phpstan.neon`
 - Add `phpstan.neon` to `.gitignore`
+
 ---
+
 ## Including files
+
 ```yaml
 includes:
-- phpstan.neon.dist
-- phpstan_test.neon.dist
+  - phpstan.neon.dist
+  - phpstan_test.neon.dist
 ```
+
 ---
 
 # Punning paths
 
 ```yaml
 parameters:
-	paths:
-		- src
-		- tests
+  paths:
+    - src
+    - tests
 ```
 
 ```bash
 ./vendor/bin/phpstan analyse src tests
 ```
+
 ---
 
 # Excluding files
@@ -361,14 +452,16 @@ parameters:
 ---
 
 # Ignoring errors
+
 ```yaml
 parameters:
-	ignoreErrors:
-		- '#Function pcntl_open not found\.#'
-        - '#Call to an undefined method Traversable<mixed, mixed>::uasort\(\)#'
+  ignoreErrors:
+    - '#Function pcntl_open not found\.#'
+      - '#Call to an undefined method Traversable<mixed, mixed>::uasort\(\)#'
 ```
 
 ---
+
 # Lots more config
 
 See [https://phpstan.org/config-reference](https://phpstan.org/config-reference) for more
@@ -406,6 +499,7 @@ See [https://phpstan.org/config-reference](https://phpstan.org/config-reference)
 ---
 
 # Recommendations for any projects
+
 <!--
 - Add PHPStan to your CI
 - Add PHPStan before running any unit tests and after any code sniffing or linting
