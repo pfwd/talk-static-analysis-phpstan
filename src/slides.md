@@ -7,32 +7,31 @@ size: 16:9
 footer: "Peter Fisher BSc MBCS [howtocodewell.net](https://howtocodewell.net) [@howToCodeWell](https://twitter.com/howtocodewell) [@pfwd](https://twitter.com/pfwd)"
 ---
 
-# Static Analysis with PHPStan
+# Code with confidence using PHPStan
 
 ---
 
-# Get the slides
-
-[https://github.com/pfwd/talk-static-analysis-phpstan](https://github.com/pfwd/talk-static-analysis-phpstan)
+1. What does code confidence mean to me
+2. What is static analysis
+3. How do we install/run/configure PHPStan
+4. How to increase code confidence using PHPStan
 
 ---
 
 # $ whoami = Peter Fisher
 
 - PHP Contractor from the UK
-- Host of the How To Code Well -- Podcast [howtocodewell.fm](https://howtocodewell.fm)
+- Host of the How To Code Well 
+  -- Podcast [howtocodewell.fm](https://howtocodewell.fm)
   -- YouTube channel [youtube.com/howtocodewell](https://youtube.com/howtocdewell)
   -- Twitch live coders team [howtocodewell.net/live](https://howtocodewell.net/live)
   -- Tutorials and courses [howtocodewell.net](https://howtocodewell.net)
 
 ---
 
-# What am I talking about
+# Get the slides
 
-1. The dream
-2. What is Static Analysis
-3. Using PHPStan
-4. Recommendations for new and legacy projects
+[https://github.com/pfwd/talk-static-analysis-phpstan](https://github.com/pfwd/talk-static-analysis-phpstan)
 
 ---
 
@@ -105,8 +104,9 @@ Quickly identify issues whilst building up confidence with the code
 
 # Code confidence
 
-The dreaded 3am phone call on Saturday after the Friday production deployment VS Knowing your code gets checked before
-it touches production
+The dreaded 3am phone call on Saturday after the Friday production deployment 
+VS 
+Knowing your code gets checked before it touches production
 
 ---
 
@@ -272,86 +272,46 @@ public function getFilename(): ?string
 - Level 0 is used by default.
 - Running level 5 will run all the levels from 0-5
 
----
-
-# Level 0
-
 <!--
+Level 0
 - Basic checks
 - unknown classes
 - unknown functions
 - unknown methods called on $this
 - wrong number of arguments passed to those methods and functions
 - always undefined variables
--->
 
----
-
-# Level 1
-
-<!--
+Level 1
 - possibly undefined variables
 - unknown magic methods and properties on classes with __call and __get
--->
 
----
-
-# Level 2
-
-<!--
+Level 2
 - unknown methods checked on all expressions (not just $this)
 - validating PHPDocs
--->
----
 
-# Level 3
-
-<!--
+Level 3
 - Return types
 - types assigned to properties
--->
 
----
-
-# Level 4
-<!--
+Level 4
 - Dead code checking - always false instanceof and other type checks 
 - Unreachable code after
--->
----
 
-# Level 5
+Level 5
+- Checking types of arguments passed to methods and functions
 
-<!--
-Checking types of arguments passed to methods and functions
--->
----
+Level 6 
+- Missing typehints
 
-# Level 6
-
-<!--
-Missing typehints
--->
----
-
-# Level 7
-
-<!--
+Level 7 
 - Report partially wrong union types 
--->
----
 
-# Level 8
-
-<!--
+Level 8
 - Report calling methods and accessing properties on nullable types
--->
----
 
-# Level 9
-
-<!--
+Level 9
 - 9 be strict about the mixed type
+
 -->
 
 ---
@@ -382,7 +342,7 @@ private $lastName
 
 # How to configure
 
-- Neon format (phpstan.neon)
+- Neon format (phpstan.neon, phpstan.neon.dist)
 - CLI
 
 ---
@@ -457,7 +417,7 @@ parameters:
 parameters:
   ignoreErrors:
     - '#Function pcntl_open not found\.#'
-      - '#Call to an undefined method Traversable<mixed, mixed>::uasort\(\)#'
+    - '#Call to an undefined method Traversable<mixed, mixed>::uasort\(\)#'
 ```
 
 ---
@@ -466,20 +426,44 @@ parameters:
 
 See [https://phpstan.org/config-reference](https://phpstan.org/config-reference) for more
 
-<!-- Includes config switches to turn checks on and off
+<!-- Includes config switches to turn certain checks on and off
 -->
 
 ---
 
-# Recommended usage
+# Increase code confidence
 
 --- 
+
+# Recommendations for any project
+
+PHPCs -> PHPStan -> PHPUnit
+
+```bash
+$ make tests
+```
+```bash
+$ composer test
+```
+
+<!--
+- Add PHPStan to your CI
+- Add PHPStan before running any unit tests and after any code sniffing or linting
+- Ensure that developers can run all the CI commands including PHPStan locally using one command
+- Enforce that no code can be merged into the main branches unless the CI fully passes
+- Don't analyse code that you haven't written.  Don't include the vendor
+- Don't upgrade your framework or PHP version until you have fixed all PHPStan errors
+- After upgrading your framework or PHP version run PHPStan as you may need to adjust your code
+- After upgrading PHPStan run PHPStan to check if anything new has been picked up
+-->
+---
 
 # Recommendations for new projects
 
 <!--
 - Start at the highest level
 - Only reduce the level if you are 100% sure you cannot fix the issue
+- Ignore one off errors in the config instead of opting to lower the level. You will end up missing other checks
 - Try to not ignore or exclude any errors
 -->
 
@@ -498,19 +482,49 @@ See [https://phpstan.org/config-reference](https://phpstan.org/config-reference)
 
 ---
 
-# Recommendations for any projects
+# 3 confidence levels for legacy projects
+
+---
+
+# 1) PHPStan is already in use at the highest run level and working well
+
+- High confidence level
+
+---
+
+# 2) PHPStan is not installed
+
+- Very low confidence level
+
+How do you install PHPStan on a legacy project?
 
 <!--
-- Add PHPStan to your CI
-- Add PHPStan before running any unit tests and after any code sniffing or linting
-- Ensure that developers can run all the CI commands including PHPStan locally using one command
-- Enforce that no code can be merged into the main branches unless the CI fully passes
-- Don't analyse code that you haven't written.  Don't include the vendor
-- Don't upgrade your framework or PHP version until you have fixed all PHPStan errors
-- After upgrading your framework or PHP version run PHPStan as you may need to adjust your code
-- After upgrading PHPstan run PHPstan to check if anything new has been picked up
+- Get the by in of the team
+- Run at the highest level to see what needs fixing
+- Run at each level and create a bug per run level
+- Attempt to fix a level per sprint
+- Use phpstan.neon as a means of testing beyond the baseline
+- Put the fixes in a separate branch/pr
+- In the PR update the run level in phpstan.neon.dist
 -->
 ---
 
-# Other Static Analysis tools
+# 3) PHPStan is installed but using a low run level
+
+- Low confidence level
+
+How do you upgrade PHPStan on a legacy project?
+<!--
+- Run the next level base level via phpstan.neon
+- Mention what needs fixing to the team. They might not be aware that PHPStan has other levels
+- Attempt to fix a level per sprint
+- Use phpstan.neon as a means of testing beyond the baseline
+- Put the fixes in a separate branch/pr
+- In the PR update the run level in phpstan.neon.dist
+-->
+---
+
+# Thank you
+
+[@pfwd](https://twitter.com/pfwd])
 
