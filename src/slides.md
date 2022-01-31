@@ -55,18 +55,17 @@ footer: "Peter Fisher BSc MBCS [howtocodewell.net](https://howtocodewell.net) [@
 # Legacy projects
 
 <!--
-- Could have a spaghetti code base
-- Could have Mixture of frameworks and library's
-- Could be out of date code
-- Could be using an older version of PHP
-- Incoming change requests
-- Could have no tests
-- Lots of known bugs
-- Lots of unknown bugs
-- Lots of end users. Some are complaining
-- Performance issues
-- Security concerns
-- Could have a low confidence that an upgrade will work
+- It could be a spaghetti code base
+- It could have mixture of frameworks and library's
+- The code could be out of date
+- It could be using an older version of PHP
+- It could have incoming change requests
+- There might be 0 tests
+- There could be lots of known bugs
+- There could be lots of unknown bugs
+- There could be many end users. Some might be complaining
+- There could be performance, security, and data integrity issues
+- You could have a low confidence that an upgrading or improving something will work
 -->
 
 ---
@@ -81,10 +80,11 @@ Start clean, continue clean whilst building up confidence with the code
 
 <!--
 - Be aware of known issues before deployment
-- Gain visual feedback on what code needs to be fixed
+- Gain visual feedback on what parts of code needs to be fixed
 - Spot potential gotchas in the new architecture
 - Create a CI that reports errors
 - Ensure the team follows the same rules
+- Move quickly whilst building stability
 -->
 ---
 
@@ -98,6 +98,7 @@ Quickly identify issues whilst building up confidence with the code
 - Enforce coding standards and rules in the CI
 - Have confidence with the codebase
 - Standardize the codebase
+- Make the devs happy
 -->
 
 ---
@@ -106,7 +107,7 @@ Quickly identify issues whilst building up confidence with the code
 
 The dreaded 3am phone call on Saturday after the Friday production deployment 
 VS 
-Knowing your code gets checked before it touches production
+Knowing your code and everyone else's code will get checked before it goes anywhere near production
 
 ---
 
@@ -131,11 +132,7 @@ Knowing your code gets checked before it touches production
 
 # From Wikipedia
 
-"Static program analysis is the analysis of computer software performed without executing any programs,
-
-in contrast with dynamic analysis,
-
-which is performed on programs during their execution"
+"Static program analysis is the analysis of computer software performed without executing any programs, in contrast with dynamic analysis, which is performed on programs during their execution"
 
 ---
 
@@ -149,7 +146,8 @@ Static analysis will search code for non coding compliance without the need for 
 
 - It tests the code without running it = SPEED
 - It compares the code against a given set of rules
-- It tells you which file and line doesn't conform to the given rules
+- It tells you which file and line doesn't conform which rule
+- It prevents very bad things from happening
 
 ---
 
@@ -360,7 +358,7 @@ parameters:
 
 # Priority order
 
-1. If a config file is supplied via CLI then it will be used
+1. If a config file is supplied via CLI then it will be used `-c`
 2. Otherwise, if `phpstan.neon` exists then it will be used
 3. Otherwise, if `phpstan.neon.dist` exists that it will be used
 4. If no config is supplied then defaults will be used
@@ -375,7 +373,7 @@ parameters:
 
 ---
 
-## Including files
+## Including config files
 
 ```yaml
 includes:
@@ -385,7 +383,7 @@ includes:
 
 ---
 
-# Punning paths
+# Checking paths
 
 ```yaml
 parameters:
@@ -458,16 +456,55 @@ $ composer test
 -->
 ---
 
+# Use other extensions that match your setup
+```bash
+phpstan/phpstan-doctrine
+```
+```bash
+phpstan/phpstan-symfony
+```
+
+---
 # Recommendations for new projects
 
 <!--
-- Start at the highest level
+- Use the the max level.
 - Only reduce the level if you are 100% sure you cannot fix the issue
-- Ignore one off errors in the config instead of opting to lower the level. You will end up missing other checks
+- Ignore one off errors via the config instead of opting to lower the level. You will end up missing other checks
 - Try to not ignore or exclude any errors
 -->
+---
+
+# Ran at max level
+```bash
+./vendor/bin/phpstan analyse -l max src
+```
+
+```bash
+parameters:
+  level: max
+  paths:
+    - src
+```
+<!--
+- Use the the max level. This will keep you at the highest possible level when PHPstan is upgraded
+-->
+---
+# Get stricter
+[https://github.com/phpstan/phpstan-strict-rules](https://github.com/phpstan/phpstan-strict-rules)
+```bash
+composer require --dev phpstan/phpstan-strict-rules
+```
+```bash
+includes:
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
+```
+OR
+[https://github.com/phpstan/extension-installer](https://github.com/phpstan/extension-installer)
 
 ---
+
+
 
 # Recommendations for legacy projects
 
@@ -486,7 +523,7 @@ $ composer test
 
 ---
 
-# 1) PHPStan is already in use at the highest run level and working well
+# 1) PHPStan is already in use and is running at the highest level and working well
 
 - High confidence level
 
@@ -501,7 +538,7 @@ How do you install PHPStan on a legacy project?
 <!--
 - Get the by in of the team
 - Run at the highest level to see what needs fixing
-- Run at each level and create a bug per run level
+- Run at each level and create a ticket per run level
 - Attempt to fix a level per sprint
 - Use phpstan.neon as a means of testing beyond the baseline
 - Put the fixes in a separate branch/pr
@@ -515,12 +552,13 @@ How do you install PHPStan on a legacy project?
 
 How do you upgrade PHPStan on a legacy project?
 <!--
-- Run the next level base level via phpstan.neon
+- Run the next base level via phpstan.neon
 - Mention what needs fixing to the team. They might not be aware that PHPStan has other levels
 - Attempt to fix a level per sprint
 - Use phpstan.neon as a means of testing beyond the baseline
 - Put the fixes in a separate branch/pr
 - In the PR update the run level in phpstan.neon.dist
+- Rinse and repeat
 -->
 ---
 
