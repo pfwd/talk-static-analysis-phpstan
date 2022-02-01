@@ -35,7 +35,12 @@ footer: "Peter Fisher BSc MBCS [howtocodewell.net](https://howtocodewell.net) [@
 
 ---
 
-# There are two types of projects that every programmer deals with during their career
+# #1
+## What does code confidence mean to me
+
+---
+
+## There are two types of projects that every programmer deals with during their career
 
 ---
 
@@ -60,6 +65,7 @@ footer: "Peter Fisher BSc MBCS [howtocodewell.net](https://howtocodewell.net) [@
 - The code could be out of date
 - It could be using an older version of PHP
 - It could have incoming change requests
+- It could have poor technical documentation
 - There might be 0 tests
 - There could be lots of known bugs
 - There could be lots of unknown bugs
@@ -126,7 +132,8 @@ Knowing your code and everyone else's code will get checked before it goes anywh
 
 ---
 
-# Static Analysis: What is it?
+# #2
+## What is Static Analysis
 
 ---
 
@@ -136,32 +143,30 @@ Knowing your code and everyone else's code will get checked before it goes anywh
 
 ---
 
-# I still understand?
+# What does that mean?
 
-Static analysis will search code for non coding compliance without the need for code execution.
-
----
-
-# I still don't understand?
-
-- It tests the code without running it = SPEED
+- Static analysis will search code for non coding compliance without the need for code execution.
 - It compares the code against a given set of rules
-- It tells you which file and line doesn't conform which rule
+- It tells you which file and line doesn't conform to which rule
 - It prevents very bad things from happening
 
 ---
 
-# Why you should care
+# Type checking
 
-<!--
-- Catch errors before they happen
-- It's fast
-- Consistently clean code base
-- Happy devs
--->
+```php
+$var = new StdClass() + 5;
+echo $var;
+
+// PHP Warning:  Uncaught TypeError: Unsupported operand types
+```
 
 ---
+# PHP type system is at runtime
+- The code needs to run to see the errors
+---
 
+# 3
 ## PHPStan has entered the chat
 
 - [phpstan.org](https://phpstan.org/)
@@ -175,16 +180,6 @@ Static analysis will search code for non coding compliance without the need for 
 - Has an online editor
 - Is free and open source
 - Has pro paid features
-
----
-
-## Pro features
-
-- Web UI
-- Watch mode
-- Interactive fixer mode
-
-Checkout [phpstan.org](https://phpstan.org/) for more details
 
 ---
 
@@ -429,32 +424,50 @@ See [https://phpstan.org/config-reference](https://phpstan.org/config-reference)
 
 ---
 
-# Increase code confidence
+# #4
+## How to increase code confidence using PHPStan
 
 --- 
 
 # Recommendations for any project
 
+---
+# Test order is important
+
 PHPCs -> PHPStan -> PHPUnit
 
+---
+
+# One command to rule them all
 ```bash
 $ make tests
 ```
 ```bash
 $ composer test
 ```
-
+---
+# Use a CI
 <!--
-- Add PHPStan to your CI
-- Add PHPStan before running any unit tests and after any code sniffing or linting
-- Ensure that developers can run all the CI commands including PHPStan locally using one command
 - Enforce that no code can be merged into the main branches unless the CI fully passes
 - Don't analyse code that you haven't written.  Don't include the vendor
+-->
+---
+# Only test your code
+<!--
+- Don't analyse code that you haven't written.  
+- Don't include the vendor
+- Ignore any code that is automatically generated like migrations
+-->
+--
+
+# Be careful with upgrades
+<!--
 - Don't upgrade your framework or PHP version until you have fixed all PHPStan errors
 - After upgrading your framework or PHP version run PHPStan as you may need to adjust your code
 - After upgrading PHPStan run PHPStan to check if anything new has been picked up
 -->
 ---
+
 
 # Use other extensions that match your setup
 ```bash
@@ -504,7 +517,21 @@ OR
 
 ---
 
-
+# Use Generics
+- Discover the Array shapes
+```php
+/**
+ * @return array<string, int>
+ */
+function getItems(): array
+{
+  return [
+    'hello' => 1,
+    'world' => 2
+  ];
+}
+```
+---
 
 # Recommendations for legacy projects
 
@@ -555,10 +582,47 @@ How do you upgrade PHPStan on a legacy project?
 - Run the next base level via phpstan.neon
 - Mention what needs fixing to the team. They might not be aware that PHPStan has other levels
 - Attempt to fix a level per sprint
-- Use phpstan.neon as a means of testing beyond the baseline
-- Put the fixes in a separate branch/pr
-- In the PR update the run level in phpstan.neon.dist
 - Rinse and repeat
+-->
+---
+
+# When to use annotations or native type hints
+
+- It's up to you!
+- Don't double up
+- Use native type hints where possible
+- Use annotations when you can't use native type hints
+
+---
+
+```php
+/**
+ * @return array<string, int>
+ */
+function getItems(): array
+{
+  return [
+    'hello' => 1,
+    'world' => 2
+  ];
+}
+
+```
+<!--
+Native type hint wont work for the array shape
+-->
+---
+
+```php
+
+function getName(): string
+{
+  return 'Peter Fisher'
+}
+
+```
+<!--
+No need to use an annotation
 -->
 ---
 
