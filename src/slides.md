@@ -458,7 +458,7 @@ $ composer test
 - Don't include the vendor
 - Ignore any code that is automatically generated like migrations
 -->
---
+---
 
 # Be careful with upgrades
 <!--
@@ -623,6 +623,14 @@ function getName(): string
 ```
 <!--
 No need to use an annotation
+-->
+---
+# Static Analysis could save you money
+If you're relying on Bugsnag or Sentry to catch errors that Static Analysis can catch then you're doing it wrong
+
+<!--
+- Bugsnag or Sentry have pricing plans based on the number of events triggered.
+- The more compliant your code is the less events will be triggered
 -->
 ---
 
