@@ -40,11 +40,11 @@ footer: "Peter Fisher BSc MBCS [howtocodewell.net](https://howtocodewell.net) [@
 
 ---
 
-## There are two types of projects that every programmer deals with during their career
+## There are three types of projects that every programmer deals with during their career
 
 ---
 
-# New projects
+#  1# New projects
 
 <!--
 - Start from scratch, no code (yet)
@@ -57,7 +57,7 @@ footer: "Peter Fisher BSc MBCS [howtocodewell.net](https://howtocodewell.net) [@
 
 ---
 
-# Legacy projects
+# 2# Legacy projects
 
 <!--
 - It could be a spaghetti code base
@@ -72,6 +72,18 @@ footer: "Peter Fisher BSc MBCS [howtocodewell.net](https://howtocodewell.net) [@
 - There could be many end users. Some might be complaining
 - There could be performance, security, and data integrity issues
 - You could have a low confidence that an upgrading or improving something will work
+-->
+
+---
+
+# 3# Migrations/rebuilds
+
+<!--
+- Data integrity could be poor
+- Existing user base
+- Downtime issues
+- There could be many reasons why a migration is needed
+- Work arounds
 -->
 
 ---
@@ -109,9 +121,21 @@ Quickly identify issues whilst building up confidence with the code
 
 ---
 
+# Migrated projects
+
+Ensure the migration is smooth with as little disruption as possible
+
+<!--
+- End users should only experience positive changes
+- Be aware of the risky areas
+- Keep data secure
+-->
+
+---
+
 # Code confidence
 
-The dreaded 3am phone call on Saturday after the Friday production deployment 
+The dreaded 3am phone call/Slack message on Saturday after the Friday production deployment 
 VS 
 Knowing your code and everyone else's code will get checked before it goes anywhere near production
 
@@ -170,14 +194,6 @@ echo $var;
 ## PHPStan has entered the chat
 
 - [phpstan.org](https://phpstan.org/)
-- [Ondřej Mirtes](https://github.com/ondrejmirtes)
-- [@OndrejMirtes](https://twitter.com/OndrejMirtes)
-
----
-
-## PHPStan
-
-- Has an online editor
 - Is free and open source
 - Has pro paid features
 
@@ -410,7 +426,6 @@ parameters:
 parameters:
   ignoreErrors:
     - '#Function pcntl_open not found\.#'
-    - '#Call to an undefined method Traversable<mixed, mixed>::uasort\(\)#'
 ```
 
 ---
@@ -488,7 +503,7 @@ phpstan/phpstan-symfony
 -->
 ---
 
-# Ran at max level
+# Run at max level
 ```bash
 ./vendor/bin/phpstan analyse -l max src
 ```
@@ -536,17 +551,40 @@ function getItems(): array
 # Recommendations for legacy projects
 
 <!--
-- Run the highest level once to see what needs fixing 
-- Start on the lowest level and fix any issues.  Then incrementally bump up the level
-- Each time you bump up the level update the CI to use that level
 - Fix errors in a separate branch which doesn't contain other features/fixes
-- Make sure you have other tests that support your changes
 - Ensure you have installed the correct support packages for your libraries and frameworks
 -->
 
 ---
 
-# 3 confidence levels for legacy projects
+# Run the highest level once
+
+<!--
+- This shows you what you are up against
+- Don't be afraid of what you might find
+- Keep note of how many errors you have
+-->
+
+---
+# Start small and go gradually
+
+<!--
+- Do one level at a time
+- Do it gradually
+-->
+
+---
+# Make sure you have tests to back up your changes
+
+<!--
+- Unit tests
+- Acceptance tests
+- Sometimes if its broken it actually works
+-->
+
+---
+
+# 3 Confidence levels for legacy projects
 
 ---
 
@@ -555,8 +593,20 @@ function getItems(): array
 - High confidence level
 
 ---
+# 2) PHPStan is installed but using a low run level
 
-# 2) PHPStan is not installed
+- Low confidence level
+
+How do you upgrade PHPStan on a legacy project?
+<!--
+- Run the next base level via phpstan.neon
+- Mention what needs fixing to the team. They might not be aware that PHPStan has other levels
+- Attempt to fix a level per sprint
+- Rinse and repeat
+-->
+---
+
+# 3) PHPStan is not installed
 
 - Very low confidence level
 
@@ -573,18 +623,7 @@ How do you install PHPStan on a legacy project?
 -->
 ---
 
-# 3) PHPStan is installed but using a low run level
 
-- Low confidence level
-
-How do you upgrade PHPStan on a legacy project?
-<!--
-- Run the next base level via phpstan.neon
-- Mention what needs fixing to the team. They might not be aware that PHPStan has other levels
-- Attempt to fix a level per sprint
-- Rinse and repeat
--->
----
 
 # When to use annotations or native type hints
 
