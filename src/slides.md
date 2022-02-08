@@ -532,20 +532,88 @@ OR
 
 ---
 
-# Use Generics
-- Discover the Array shapes
+# Generics are Awesome
+
+Loop over an array of products getting the ID of each product
+
+Sounds easy right?
+
+---
+
+# Oh no
 ```php
-/**
- * @return array<string, int>
- */
-function getItems(): array
-{
-  return [
-    'hello' => 1,
-    'world' => 2
-  ];
+$products = [
+    new PreOrder(),
+    new Subscription(),
+    new Product(),
+    'SKUABCD',
+];
+```
+---
+# A work around
+```php
+foreach ($products as $product) {
+    if (!$product instanceof Product || 
+        !$product instanceof Subscription ||  
+        !$product instanceof PreOrder || 
+        ) 
+    {
+          continue;
+    }
+
+    $id = $product->getId();
+    //..
 }
 ```
+---
+```php
+function getProductIds(array $products) {
+    foreach ($products as $product) {
+        // Is $product actually an instance of Product?
+    }
+}
+```
+<!--
+- Data integrity
+- What type is $product
+-->
+---
+# Messy code
+- Checks get out of hand
+- Not very readable
+- Prone to mistakes
+---
+# PHPStan gives you guarantees and documentation
+<!--
+- Code completion
+- Performance
+- Contractual definition of code
+-->
+---
+
+```php
+/**
+ * @param array<int, Product|Subscription|PreOrder|string> $products
+ * @return array<int, int>
+ */
+function getProductIds(array $products): array
+{
+    $ids = [];
+    foreach($products as $product){
+      if(is_string($product)){
+          continue;
+      }
+      
+      $ids[] = $product->getId()
+    }
+    return $ids;
+}
+```
+<!-- 
+- Documents the requirements of the array
+- Autocompletion
+- Ideally use an interface if this a common occurrence
+-->
 ---
 
 # Recommendations for legacy projects
