@@ -21,6 +21,7 @@ footer: "Peter Fisher BSc MBCS [howtocodewell.net](https://howtocodewell.net) [@
 # $ whoami = Peter Fisher
 
 - PHP Contractor from the UK
+- ~20 years of PHP experience
 - Host of the How To Code Well 
   -- Podcast [howtocodewell.fm](https://howtocodewell.fm)
   -- YouTube channel [youtube.com/howtocodewell](https://youtube.com/howtocdewell)
@@ -32,6 +33,9 @@ footer: "Peter Fisher BSc MBCS [howtocodewell.net](https://howtocodewell.net) [@
 # Get the slides
 
 [https://github.com/pfwd/talk-static-analysis-phpstan](https://github.com/pfwd/talk-static-analysis-phpstan)
+
+Feedback
+[https://joind.in/talk/37f80](https://joind.in/talk/37f80)
 
 ---
 
@@ -190,7 +194,7 @@ echo $var;
 - The code needs to run to see the errors
 ---
 
-# 3
+# #3
 ## PHPStan has entered the chat
 
 - [phpstan.org](https://phpstan.org/)
@@ -464,7 +468,6 @@ $ composer test
 # Use a CI
 <!--
 - Enforce that no code can be merged into the main branches unless the CI fully passes
-- Don't analyse code that you haven't written.  Don't include the vendor
 -->
 ---
 # Only test your code
@@ -502,7 +505,9 @@ phpstan/phpstan-symfony
 - Try to not ignore or exclude any errors
 -->
 ---
-
+<!--
+- Use the the max level. This will keep you at the highest possible level when PHPstan is upgraded
+-->
 # Run at max level
 ```bash
 ./vendor/bin/phpstan analyse -l max src
@@ -514,10 +519,9 @@ parameters:
   paths:
     - src
 ```
-<!--
-- Use the the max level. This will keep you at the highest possible level when PHPstan is upgraded
--->
+
 ---
+
 # Get stricter
 [https://github.com/phpstan/phpstan-strict-rules](https://github.com/phpstan/phpstan-strict-rules)
 ```bash
@@ -530,90 +534,6 @@ includes:
 OR
 [https://github.com/phpstan/extension-installer](https://github.com/phpstan/extension-installer)
 
----
-
-# Generics are Awesome
-
-Loop over an array of products getting the ID of each product
-
-Sounds easy right?
-
----
-
-# Oh no
-```php
-$products = [
-    new PreOrder(),
-    new Subscription(),
-    new Product(),
-    'SKUABCD',
-];
-```
----
-# A work around
-```php
-foreach ($products as $product) {
-    if (!$product instanceof Product || 
-        !$product instanceof Subscription ||  
-        !$product instanceof PreOrder || 
-        ) 
-    {
-          continue;
-    }
-
-    $id = $product->getId();
-    //..
-}
-```
----
-```php
-function getProductIds(array $products) {
-    foreach ($products as $product) {
-        // Is $product actually an instance of Product?
-    }
-}
-```
-<!--
-- Data integrity
-- What type is $product
--->
----
-# Messy code
-- Checks get out of hand
-- Not very readable
-- Prone to mistakes
----
-# PHPStan gives you guarantees and documentation
-<!--
-- Code completion
-- Performance
-- Contractual definition of code
--->
----
-
-```php
-/**
- * @param array<int, Product|Subscription|PreOrder|string> $products
- * @return array<int, int>
- */
-function getProductIds(array $products): array
-{
-    $ids = [];
-    foreach($products as $product){
-      if(is_string($product)){
-          continue;
-      }
-      
-      $ids[] = $product->getId()
-    }
-    return $ids;
-}
-```
-<!-- 
-- Documents the requirements of the array
-- Autocompletion
-- Ideally use an interface if this a common occurrence
--->
 ---
 
 # Recommendations for legacy projects
@@ -691,7 +611,82 @@ How do you install PHPStan on a legacy project?
 -->
 ---
 
+# Generics are Awesome
 
+Loop over an array of products getting the ID of each product
+
+Sounds easy right?
+
+---
+
+# Oh no
+```php
+$products = [
+    new PreOrder(),
+    new Subscription(),
+    new Product(),
+    'SKUABCD',
+];
+```
+---
+# A work around
+```php
+foreach ($products as $product) {
+    if (!$product instanceof Product || 
+        !$product instanceof Subscription ||  
+        !$product instanceof PreOrder || 
+        ) 
+    {
+          continue;
+    }
+
+    $id = $product->getId();
+    //..
+}
+```
+---
+```php
+function getProductIds(array $products) {
+    foreach ($products as $product) {
+        // Is $product actually an instance of Product?
+    }
+}
+```
+<!--
+- Data integrity
+- What type is $product
+-->
+---
+# Messy code
+- Checks get out of hand
+- Not very readable
+- Prone to mistakes
+---
+
+```php
+/**
+ * @param array<int, Product|Subscription|PreOrder|string> $products
+ * @return array<int, int>
+ */
+function getProductIds(array $products): array
+{
+    $ids = [];
+    foreach($products as $product){
+      if(is_string($product)){
+          continue;
+      }
+      
+      $ids[] = $product->getId()
+    }
+    return $ids;
+}
+```
+<!-- 
+- Documents the requirements of the array
+- Autocompletion
+- Ideally use an interface if this a common occurrence
+-->
+---
 
 # When to use annotations or native type hints
 
