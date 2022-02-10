@@ -21,7 +21,7 @@ footer: "Peter Fisher BSc MBCS [howtocodewell.net](https://howtocodewell.net) [@
 # $ whoami = Peter Fisher
 
 - PHP Contractor from the UK
-- ~20 years of PHP experience
+- Playing with PHP > 20 years
 - Host of the How To Code Well 
   -- Podcast [howtocodewell.fm](https://howtocodewell.fm)
   -- YouTube channel [youtube.com/howtocodewell](https://youtube.com/howtocdewell)
@@ -101,10 +101,10 @@ Feedback
 Start clean, continue clean whilst building up confidence with the code
 
 <!--
-- Be aware of known issues before deployment
+- Be aware of known issues before 1st deployment
 - Gain visual feedback on what parts of code needs to be fixed
 - Spot potential gotchas in the new architecture
-- Create a CI that reports errors
+- Create a CI that reports errors quickly
 - Ensure the team follows the same rules
 - Move quickly whilst building stability
 -->
@@ -116,9 +116,8 @@ Quickly identify issues whilst building up confidence with the code
 
 <!--
 - Be aware of known issues before deployment
-- Clean up code smells
+- Clean up existing code smells
 - Enforce coding standards and rules in the CI
-- Have confidence with the codebase
 - Standardize the codebase
 - Make the devs happy
 -->
@@ -373,7 +372,7 @@ parameters:
 
 # Priority order
 
-1. If a config file is supplied via CLI then it will be used `-c`
+1. If a config file is supplied via CLI then it will be used (`-c`)
 2. Otherwise, if `phpstan.neon` exists then it will be used
 3. Otherwise, if `phpstan.neon.dist` exists that it will be used
 4. If no config is supplied then defaults will be used
@@ -499,7 +498,6 @@ phpstan/phpstan-symfony
 # Recommendations for new projects
 
 <!--
-- Use the the max level.
 - Only reduce the level if you are 100% sure you cannot fix the issue
 - Ignore one off errors via the config instead of opting to lower the level. You will end up missing other checks
 - Try to not ignore or exclude any errors
@@ -739,4 +737,7 @@ If you're relying on Bugsnag or Sentry to catch errors that Static Analysis can 
 # Thank you
 
 [@pfwd](https://twitter.com/pfwd])
+
+Please give feedback
+![QR Code](../src/assets/images/phpsw_qr_code.png)
 
