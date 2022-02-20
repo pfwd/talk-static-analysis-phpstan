@@ -32,10 +32,7 @@ footer: "Peter Fisher BSc MBCS [howtocodewell.net](https://howtocodewell.net) [@
 
 # Get the slides
 
-[https://github.com/pfwd/talk-static-analysis-phpstan](https://github.com/pfwd/talk-static-analysis-phpstan)
-
-Feedback
-[https://joind.in/talk/37f80](https://joind.in/talk/37f80)
+[http://peterfisher.me.uk/slides/code-with-confidence-using-phpstan.html](http://peterfisher.me.uk/slides/code-with-confidence-using-phpstan.html)
 
 ---
 
@@ -178,6 +175,20 @@ Knowing your code and everyone else's code will get checked before it goes anywh
 - It prevents very bad things from happening
 
 ---
+# What's the point?
+
+## PHP type system is at runtime 
+
+<!--
+Code needs to run to the point of failure before the bug is discovered
+The code needs to run to see the errors
+-->
+
+---
+
+# A bug found at runtime will always cost more than a bug found during static analysis.
+
+---
 
 # Type checking
 
@@ -187,10 +198,14 @@ echo $var;
 
 // PHP Warning:  Uncaught TypeError: Unsupported operand types
 ```
-
 ---
-# PHP type system is at runtime
-- The code needs to run to see the errors
+
+# But my code works?
+
+- It could be risky
+- It could be broken but working
+- It may not be future proof
+
 ---
 
 # #3
@@ -589,6 +604,7 @@ How do you upgrade PHPStan on a legacy project?
 - Mention what needs fixing to the team. They might not be aware that PHPStan has other levels
 - Attempt to fix a level per sprint
 - Rinse and repeat
+
 -->
 ---
 
@@ -598,15 +614,24 @@ How do you upgrade PHPStan on a legacy project?
 
 How do you install PHPStan on a legacy project?
 
-<!--
-- Get the by in of the team
-- Run at the highest level to see what needs fixing
-- Run at each level and create a ticket per run level
-- Attempt to fix a level per sprint
-- Use phpstan.neon as a means of testing beyond the baseline
-- Put the fixes in a separate branch/pr
-- In the PR update the run level in phpstan.neon.dist
--->
+---
+1. Get the by in of the team
+2. Run at the highest level
+3. Generate a baseline level
+5. Put the fixes in a separate branch/pr
+6. Rinse and repeat
+---
+
+# Generate a Baseline level
+```bash
+vendor/bin/phpstan analyse --level 7 \
+--configuration phpstan.neon \
+src/ tests/ --generate-baseline
+```
+```yaml
+includes:
+	- phpstan-baseline.neon
+```
 ---
 
 # Generics are Awesome
