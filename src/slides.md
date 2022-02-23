@@ -763,6 +763,3 @@ If you're relying on Bugsnag or Sentry to catch errors that Static Analysis can 
 
 [@pfwd](https://twitter.com/pfwd])
 
-Please give feedback
-![QR Code](../src/assets/images/phpsw_qr_code.png)
-
