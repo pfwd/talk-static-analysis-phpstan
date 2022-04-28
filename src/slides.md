@@ -133,14 +133,6 @@ Ensure the migration is smooth with as little disruption as possible
 
 ---
 
-# Code confidence
-
-The dreaded 3am phone call/Slack message on Saturday after the Friday production deployment 
-VS 
-Knowing your code and everyone else's code will get checked before it goes anywhere near production
-
----
-
 # How do we get there
 
 ---
